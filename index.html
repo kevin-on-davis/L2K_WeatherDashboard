@@ -19,29 +19,30 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="weatherD.css" />
-    <title>Weasther Dashboard</title>
+    <title>Weather Dashboard</title>
   </head>
 
   <body>
-    <header class="jumbotron">
+    <header class="jumbotron text-center">
       <h1 class="display-3">Weather Dashboard</h1>
       <div class="row" style="justify-content: space-around">
     </header>
-
-    <div id="city_srch_div">
-        <input type="search" />
-        <select id="city_list" multiple>
-        </select>        
+    <div class = "row">
+      <div class = "card col-3" id="city_srch_div" style="padding:1vw; width:30%; height:100%; border:solid; color:grey; margin-right: 2vw; margin-left: 2vw">
+          <p><input type="text" id="city_search"/><button id="search_button">Search</button></p>
+          <select id="city_list">
+          </select>        
+      </div>
+      <div class = "card col-8" id="weather_dtl_div"  style="padding:1vw; height:40%; width:60%">
+          <div id="current_weather" style="padding:1vw; border:solid; border-color: grey; color:black">
+          </div>
+          <div id="weather_forecast" style="padding:1vw">
+              <div class="card-deck" id="five_day">
+              </div>
+         </div>
+      </div>
     </div>
-    <div id="weather_dtl_div">
-        <div id="current_weather">
-
-        </div>
-        <div class="container" id="weather_forecast">
-            
-        </div>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./weatherD.js"></script>
 </body>
