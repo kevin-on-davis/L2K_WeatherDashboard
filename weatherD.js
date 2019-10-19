@@ -64,7 +64,9 @@ function getWeatherConditions(queryURL)
     $.get(queryURL).then(function(res)
     {
         var myWeather = res;
-        var today = moment(Date(myWeather.dt*1000)).format('LLL');
+        console.log(myWeather.dt+" + "+myWeather.timezone+" = "+Date((myWeather.dt+myWeather.timezone)*1000));
+        var today = moment(Date((myWeather.dt)*1000)).format('LLL');
+        
 
         $("#current_weather").empty();
         var myWeatherIcon = `http://openweathermap.org/img/w/${myWeather.weather[0].icon}.png`;
@@ -74,19 +76,25 @@ function getWeatherConditions(queryURL)
         $("#current_weather").append(`<h6 class="col-12">Wind: ${myWeather.wind.speed} MPH</h6>`);
         $.get(`https://api.openweathermap.org/data/2.5/uvi?lat=${myWeather.coord.lat}&lon=${myWeather.coord.lon}&units=metric&appid=${api_key}`).then(function(fore)
         {
-            // console.log(fore);
             $("#current_weather").append(`<h6 class="col-12">UV Index: <span style="color: white; border:solid; border-color:red; border-width:thick; background-color:red">${fore.value}</span></h6>`);
         });
 
         
-
         currentCityTime = setInterval(function()
         {
-            $.get(`http://api.timezonedb.com/v2.1/get-time-zone?key=${timeInCityKey}&format=json&by=position&lat=${myWeather.coord.lat}&lng=${myWeather.coord.lon}`).then(function(cTime)
+            $.get(`http://api.timezonedb.com/v2.1/get-time-zone?key=${timeInCityKey}&format=json&by=position&lat=${myWeather.coord.lat}&lng=${myWeather.coord.lon}`).then(function(success, error)
             {
-                $("#currHdr")[0].innerHTML = `<strong>${myWeather.name} (${moment(cTime.formatted).format('LLL')})</strong><img id="wicon" src="${myWeatherIcon}" alt="Weather icon">`;
+                function success(cTime)
+                {
+                    $("#currHdr")[0].innerHTML = `<strong>${myWeather.name} (${moment(cTime.formatted).format('LLL')})</strong><img id="wicon" src="${myWeatherIcon}" alt="Weather icon">`;
+                };
+
+                function error(err)
+                {
+                    $("#currHdr")[0].innerHTML = `<strong>${myWeather.name} ("Current time unavailable")</strong><img id="wicon" src="${myWeatherIcon}" alt="Weather icon">`;
+                };
             });
-        }, 1000);
+        }, 5000);
 
         var forecast_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${myWeather.coord.lat}&lon=${myWeather.coord.lon}&units=metric&appid=${api_key}`;
         $.get(forecast_URL).then(function(res)
