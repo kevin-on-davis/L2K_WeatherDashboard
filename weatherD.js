@@ -115,7 +115,7 @@ function showHistory()
 {
     if (!localStorage.city_srch_history)
     {
-        var srch_history = new Array();
+        var srch_history = [];
     }
     else
     {
