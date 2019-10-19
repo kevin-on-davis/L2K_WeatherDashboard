@@ -1,4 +1,5 @@
 var api_key = "35b3e9dd48656fb03d90eff0aff2cd0c";
+var timeInCityKey = "WCLSVSFTMXGP";
 var srch_city;
 var btn_city_search = $("#search_button");
 var lst_city_list = $("#city_list");
@@ -63,12 +64,11 @@ function getWeatherConditions(queryURL)
     $.get(queryURL).then(function(res)
     {
         var myWeather = res;
-        var today = moment(Date(1571444065*1000)).format('L');
+        var today = moment(Date(myWeather.dt*1000)).format('L');
 
         $("#current_weather").empty();
-
         var myWeatherIcon = `http://openweathermap.org/img/w/${myWeather.weather[0].icon}.png`;
-        $("#current_weather").append(`<h3 class="col-12" style="color:black"><strong>${myWeather.name} (${today}</strong>)<img id="wicon" src="${myWeatherIcon}" alt="Weather icon"></h3>`);
+        $("#current_weather").append(`<h3 id="currHdr" class="col-12" style="color:black"><strong>${myWeather.name} (${today} <span id="cityLocalTime"></span></strong>)<img id="wicon" src="${myWeatherIcon}" alt="Weather icon"></h3>`);
         $("#current_weather").append(`<h6 class="col-12">Temperature: ${myWeather.main.temp} °C</h6>`);
         $("#current_weather").append(`<h6 class="col-12">Humidity: ${myWeather.main.humidity} %</h6>`);
         $("#current_weather").append(`<h6 class="col-12">Wind: ${myWeather.wind.speed} MPH</h6>`);
@@ -78,6 +78,16 @@ function getWeatherConditions(queryURL)
             $("#current_weather").append(`<h6 class="col-12">UV Index: <span style="color: white; border:solid; border-color:red; border-width:thick; background-color:red">${fore.value}</span></h6>`);
         });
 
+        
+        $("#cityLocalTime")[0].innerText = "00:00";
+        currentCityTime = setInterval(function()
+        {
+            $.get(`http://api.timezonedb.com/v2.1/get-time-zone?key=${timeInCityKey}&format=json&by=position&lat=${myWeather.coord.lat}&lng=${myWeather.coord.lon}`).then(function(cTime)
+            {
+                $("#cityLocalTime")[0].innerText = moment(cTime.formatted).format('LT');
+            });
+        }, 1000);
+
         var forecast_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${myWeather.coord.lat}&lon=${myWeather.coord.lon}&units=metric&appid=${api_key}`;
         $.get(forecast_URL).then(function(res)
         {
@@ -86,6 +96,7 @@ function getWeatherConditions(queryURL)
             $("#five_day").empty();
             currDate = new Date();
             myStart = Math.floor(currDate.getHours()/3);
+
             for (i=0; i < 5; i++)
             {
                 var weather_icon_5day = `https://openweathermap.org/img/w/${myForecast.list[myStart].weather[0].icon}.png`;
