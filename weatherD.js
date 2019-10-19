@@ -64,7 +64,7 @@ function getWeatherConditions(queryURL)
     $.get(queryURL).then(function(res)
     {
         var myWeather = res;
-        var today = moment(Date(myWeather.dt*1000)).format('L');
+        var today = moment(Date(myWeather.dt*1000)).format('LLL');
 
         $("#current_weather").empty();
         var myWeatherIcon = `http://openweathermap.org/img/w/${myWeather.weather[0].icon}.png`;
@@ -79,12 +79,12 @@ function getWeatherConditions(queryURL)
         });
 
         
-        $("#cityLocalTime")[0].innerText = "00:00";
+
         currentCityTime = setInterval(function()
         {
             $.get(`http://api.timezonedb.com/v2.1/get-time-zone?key=${timeInCityKey}&format=json&by=position&lat=${myWeather.coord.lat}&lng=${myWeather.coord.lon}`).then(function(cTime)
             {
-                $("#cityLocalTime")[0].innerText = moment(cTime.formatted).format('LT');
+                $("#currHdr")[0].innerHTML = `<strong>${myWeather.name} (${moment(cTime.formatted).format('LLL')})</strong><img id="wicon" src="${myWeatherIcon}" alt="Weather icon">`;
             });
         }, 1000);
 
