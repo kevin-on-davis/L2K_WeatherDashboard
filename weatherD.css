@@ -1,0 +1,25 @@
+#city_srch_div
+{
+    padding:1vw; 
+    width:30%; 
+    height:100%; 
+    /* border:solid;  */
+    background-color: rgb(253, 253, 252); 
+    margin-right: 2vw; 
+    margin-left: 2vw;
+}
+
+#weather_dtl_div
+{
+    padding:1vw; 
+    height:40%; 
+    width:60%;
+}
+
+#current_weather
+{
+    padding:1vw; 
+    border:solid; 
+    border-color: grey; 
+    color:black
+}

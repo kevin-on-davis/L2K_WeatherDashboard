@@ -23,18 +23,19 @@
   </head>
 
   <body>
-    <header class="jumbotron text-center">
-      <h1 class="display-3">Weather Dashboard</h1>
+    <header class="jumbotron text-center" style="background-color: gray; color:white">
+      <h1 class="display-3"><strong>Weather Dashboard</strong></h1>
       <div class="row" style="justify-content: space-around">
     </header>
     <div class = "row">
-      <div class = "card col-3" id="city_srch_div" style="padding:1vw; width:30%; height:100%; border:solid; color:grey; margin-right: 2vw; margin-left: 2vw">
-          <p><input type="text" id="city_search"/><button id="search_button">Search</button></p>
+      <div class = "card col-3" id="city_srch_div">
+        <h3><strong>Search for a City:</strong></h3>  
+        <p><input type="text" id="city_search"/><button id="search_button">Search</button></p>
           <select id="city_list">
           </select>        
       </div>
-      <div class = "card col-8" id="weather_dtl_div"  style="padding:1vw; height:40%; width:60%">
-          <div id="current_weather" style="padding:1vw; border:solid; border-color: grey; color:black">
+      <div class = "card col-8" id="weather_dtl_div">
+          <div id="current_weather">
           </div>
           <div id="weather_forecast" style="padding:1vw">
               <div class="card-deck" id="five_day">
